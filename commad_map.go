@@ -1,9 +1,38 @@
 package main
 
-func commandMap() error {
+import "fmt"
+
+func commandMap(config *config) error {
+    locationResp, err := config.pokeapiClient.ListLocations(config.nextLocationURL)
+
+    if err != nil {
+        return err
+    }
+
+    config.nextLocationURL = locationResp.Next
+    config.prevLocationURL = locationResp.Previous
+
+    for _, loc := range(locationResp.Results) {
+        fmt.Println(loc.Name)
+    }
     return nil
 }
 
-func commandMapBack() error {
+func commandMapBack(config *config) error {
+    if config.prevLocationURL == nil {
+        return fmt.Errorf("You are on the first page")
+    }
+    locationResp, err := config.pokeapiClient.ListLocations(config.prevLocationURL)
+
+    if err != nil {
+        return err
+    }
+
+    config.nextLocationURL = locationResp.Next
+    config.prevLocationURL = locationResp.Previous
+
+    for _, loc := range(locationResp.Results) {
+        fmt.Println(loc.Name)
+    }
     return nil
 }

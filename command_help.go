@@ -5,7 +5,7 @@ import (
     "fmt"
 )
 
-func commandHelp () error {
+func commandHelp (config *config) error {
     commands := getCliCommands()
 
 	helpMessage := "Welcome to the Pokedex!\nUsage:\n\n"

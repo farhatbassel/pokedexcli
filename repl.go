@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"farhatbassel/pokedexcli/internal/pokeapi"
 	"fmt"
 	"os"
 	"strings"
@@ -9,7 +10,13 @@ import (
 	"github.com/fatih/color"
 )
 
-func repl() {
+type config struct {
+    pokeapiClient   pokeapi.Client
+    nextLocationURL *string
+    prevLocationURL *string
+}
+
+func repl(config *config) {
     reader := bufio.NewReader(os.Stdin)
 
     for {
@@ -27,9 +34,8 @@ func repl() {
         if command, ok := getCliCommands()[inputCommand]; !ok {
             fmt.Println("Unknown command. Please use " + color.GreenString("help"))
         } else { 
-            if err := command.callback(); err != nil {
-                fmt.Printf("Error when executing command %v\n %v", input, err)
-                break
+            if err := command.callback(config); err != nil {
+                fmt.Printf("Error when executing command %v\n %v\n", input, err)
             }
         }
     }
@@ -44,7 +50,7 @@ func cleanInput(input string) []string {
 type cliCommand struct {
     name        string
     description string
-    callback    func() error
+    callback    func(*config) error
 }
 
 func getCliCommands() map[string]cliCommand {
