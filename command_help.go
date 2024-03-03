@@ -5,7 +5,7 @@ import (
     "fmt"
 )
 
-func commandHelp (config *config, area string) error {
+func commandHelp (config *config, arg string) error {
     commands := getCliCommands()
 
 	helpMessage := "Welcome to the Pokedex!\nUsage:\n\n"
@@ -32,6 +32,10 @@ func getColorString(cmd string) string {
 		return color.YellowString(cmd)
     case "explore":
         return color.MagentaString(cmd)
+    case "catch":
+        return color.CyanString(cmd)
+    case "inspect":
+        return color.HiGreenString(cmd)
 	default:
 		return cmd
 	}

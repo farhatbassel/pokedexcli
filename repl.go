@@ -32,16 +32,16 @@ func repl(config *config) {
 
         cleanedInput := cleanInput(input)
         inputCommand := cleanedInput[0]
-        area := ""
+        secondArg := ""
 
         if len(cleanedInput) > 1 {
-            area = cleanedInput[1]
+            secondArg = cleanedInput[1]
         }
 
         if command, ok := getCliCommands()[inputCommand]; !ok {
             fmt.Println("Unknown command. Please use " + color.GreenString("help"))
         } else {
-            if err := command.callback(config, area); err != nil {
+            if err := command.callback(config, secondArg); err != nil {
                 fmt.Printf("Error when executing command %v\n %v\n", input, err)
             }
         }
@@ -91,6 +91,11 @@ func getCliCommands() map[string]cliCommand {
             name: "catch",
             description: "Attempt at catching a pokemon",
             callback: commandCatch,
+        },
+        "inspect": {
+            name: "inspect",
+            description: "Insecpt caught pokemons",
+            callback: commandInspect,
         },
     }
 }
