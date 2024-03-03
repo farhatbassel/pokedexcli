@@ -36,6 +36,8 @@ func getColorString(cmd string) string {
         return color.CyanString(cmd)
     case "inspect":
         return color.HiGreenString(cmd)
+    case "pokedex":
+        return color.HiRedString(cmd)
 	default:
 		return cmd
 	}

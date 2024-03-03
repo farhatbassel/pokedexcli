@@ -31,6 +31,7 @@ func commandCatch(config *config, pokemon string) error {
     if isCaught {
         config.caughtPokemons[pokemon] = pokemonInfo
         fmt.Printf("%v " + color.GreenString("caught") + "!\n", pokemon)
+        fmt.Printf("You may now inspect it with the " + color.HiRedString("inspect") + " command\n")
         return nil
     }
 
