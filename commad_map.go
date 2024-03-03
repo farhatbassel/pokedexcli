@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func commandMap(config *config) error {
+func commandMap(config *config, area string) error {
     locationResp, err := config.pokeapiClient.ListLocations(config.nextLocationURL)
 
     if err != nil {
@@ -18,7 +18,7 @@ func commandMap(config *config) error {
     return nil
 }
 
-func commandMapBack(config *config) error {
+func commandMapBack(config *config, area string) error {
     if config.prevLocationURL == nil {
         return fmt.Errorf("You are on the first page")
     }

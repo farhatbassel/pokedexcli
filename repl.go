@@ -22,19 +22,25 @@ func repl(config *config) {
     for {
         fmt.Print("Pokedex> ")
         input, err := reader.ReadString('\n')
+
         if err != nil {
             error := fmt.Sprintf("Error occured when read the string value: %v", err)
             fmt.Println(error)
             break
         }
 
-        input = input[:len(input) - 1] // Remove the newline char from input
-        inputCommand := cleanInput(input)[0]
+        cleanedInput := cleanInput(input)
+        inputCommand := cleanedInput[0]
+        area := ""
+
+        if len(cleanedInput) > 1 {
+            area = cleanedInput[1]
+        }
 
         if command, ok := getCliCommands()[inputCommand]; !ok {
             fmt.Println("Unknown command. Please use " + color.GreenString("help"))
-        } else { 
-            if err := command.callback(config); err != nil {
+        } else {
+            if err := command.callback(config, area); err != nil {
                 fmt.Printf("Error when executing command %v\n %v\n", input, err)
             }
         }
@@ -50,7 +56,7 @@ func cleanInput(input string) []string {
 type cliCommand struct {
     name        string
     description string
-    callback    func(*config) error
+    callback    func(*config, string) error
 }
 
 func getCliCommands() map[string]cliCommand {
@@ -74,6 +80,11 @@ func getCliCommands() map[string]cliCommand {
             name: "map back",
             description: "Display the previous 20 locations of the Pokemon world",
             callback: commandMapBack,
+        },
+        "explore": {
+            name: "explore",
+            description: "Explore the pokemons in an area",
+            callback: commandExplore,
         },
     }
 }
