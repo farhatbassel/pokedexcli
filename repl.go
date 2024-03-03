@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 func repl() {
@@ -23,10 +25,10 @@ func repl() {
         inputCommand := cleanInput(input)[0]
 
         if command, ok := getCliCommands()[inputCommand]; !ok {
-            fmt.Printf("Error when executing command %v\n", input)
+            fmt.Println("Unknown command. Please use " + color.GreenString("help"))
         } else { 
             if err := command.callback(); err != nil {
-                fmt.Println("Unknown command. Please use help")
+                fmt.Printf("Error when executing command %v\n %v", input, err)
                 break
             }
         }
@@ -49,7 +51,7 @@ func getCliCommands() map[string]cliCommand {
     return map[string]cliCommand{
         "help": {
             name: "help",
-            description: "",
+            description: "Display the Pokedex commands",
             callback: commandHelp,
         },
         "exit": {
