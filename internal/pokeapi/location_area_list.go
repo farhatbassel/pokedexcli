@@ -8,8 +8,7 @@ import (
 )
 
 func (c *Client) ListPokemonInLocations(area string) (PokeApiLocationAreaResponse, error) {
-    url := baseURL + "/location-area/"
-    url += area
+    url := baseURL + "/location-area/" + area
 
     if val, ok := c.cache.Get(url); ok {
         locationAreaResponse := PokeApiLocationAreaResponse{}
